@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt")
 
 const SALT_ROUNDS = 10
 
-const password_helpers = {
+const LibPassword = {
     hash(passwd) {
         return new Promise((resolve, reject) => {
             bcrypt.hash(passwd, SALT_ROUNDS, function(err, hash) {
@@ -25,4 +25,4 @@ const password_helpers = {
     }
 }
 
-module.exports = password_helpers
+module.exports = LibPassword

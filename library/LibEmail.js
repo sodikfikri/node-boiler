@@ -1,12 +1,12 @@
 const path = require("path")
 const ejs = require("ejs")
 const nodemailer = require("nodemailer")
-const winston_helpers = require("./winston_helpers")
+// const winston_helpers = require("./winston_helpers")
 
-const logName = 'mail_helpers';
-const Logger = winston_helpers.initialize(logName);
+// const logName = 'mail_helpers';
+// const Logger = winston_helpers.initialize(logName);
 
-const mail_helpers = {
+const LibEmail = {
 
     createTransport: function () {
         return new Promise((resolve, reject) => {
@@ -61,7 +61,7 @@ const mail_helpers = {
                 let conn = null;
                 for (let i = 0; i<3; i++) {
                     try {
-                        conn = await mail_helpers.createTransport();
+                        conn = await LibEmail.createTransport();
                     } catch (err) {
                     continue;
                 }
@@ -101,9 +101,9 @@ const mail_helpers = {
     sendMail: function (subject, to, mailData, filename) {
         return new Promise(async (resolve, reject) => {
             try {
-                const initTransport = await mail_helpers.initializeTransport();
+                const initTransport = await LibEmail.initializeTransport();
                 if (initTransport.type != 'success') {
-                    Logger.log('error', `${logName} transporter_fail ${filename}: ${JSON.stringify(initTransport)}`);
+                    // Logger.log('error', `${logName} transporter_fail ${filename}: ${JSON.stringify(initTransport)}`);
                     reject(initTransport.err || initTransport.message);
                     // resolve({
                     //   type: initTransport.type,
@@ -120,7 +120,7 @@ const mail_helpers = {
                 }
                 ejs.renderFile(path.join(__dirname, `../files/mails/${filename}.html`), renderData, function (err, html) {
                     if (err) {
-                        Logger.log('error', `${logName} rendering_fail ${filename}: ${JSON.stringify(err)}`);
+                        // Logger.log('error', `${logName} rendering_fail ${filename}: ${JSON.stringify(err)}`);
                         reject(err);
                         // resolve({
                         //   type: 'error',
@@ -136,7 +136,7 @@ const mail_helpers = {
                     };
                     transporter.sendMail(options, function (err, info) {
                         if (err) {
-                            Logger.log('error', `${logName} sending_fail ${filename}: ${JSON.stringify(err)}`);
+                            // Logger.log('error', `${logName} sending_fail ${filename}: ${JSON.stringify(err)}`);
                             reject(err);
                             // resolve({
                             //   type: 'error',
@@ -151,7 +151,7 @@ const mail_helpers = {
                     });
                 });
             } catch (err) {
-                Logger.log('error', `${logName} sending_error ${filename}: ${JSON.stringify(err)}`);
+                // Logger.log('error', `${logName} sending_error ${filename}: ${JSON.stringify(err)}`);
                 reject(err);
                 // resolve({
                 //   type: 'error',
@@ -163,4 +163,4 @@ const mail_helpers = {
   
 }
   
-module.exports = mail_helpers;
+module.exports = LibEmail;

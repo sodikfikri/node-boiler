@@ -6,7 +6,7 @@ const crypto = require("crypto")
 const passphrase = process.env.PASS_PHRASE;
 const secretKey = crypto.createHash('sha256').update(String(passphrase)).digest();
 
-const token_helpers = {
+const LibJWT = {
 
     sign(data) {
         return new Promise((resolve, reject) => {
@@ -23,10 +23,10 @@ const token_helpers = {
             // generate token
             const opts = {
                 algorithm: 'RS256',
-                audience: 'MOBILE_USERS',
-                issuer: 'SERVICE_USERS',
-                subject: 'KALAVA_USERS',
-                expiresIn: '30d', // ex: 120(ms), 10h, 7d
+                audience: 'KASS_DASHBOARD',
+                issuer: 'SERVICE_DILCO',
+                subject: 'SERVICE_DILCO',
+                expiresIn: '7d', // ex: 120(ms), 10h, 7d
             };
             jwt.sign(payload, { key: fs.readFileSync(path.join(__dirname, '../files/keys/private.key')), passphrase }, opts, function (err, token) {
                 if (err) return reject(err);
@@ -54,4 +54,4 @@ const token_helpers = {
 
 }
 
-module.exports = token_helpers
+module.exports = LibJWT

@@ -1,7 +1,7 @@
 const dbMysql = require("../config/dbConnection")
 const Promise = require("bluebird")
 
-const mysql_helpers = {
+const LibMySql = {
     insert: async function (table, data) {
       return new Promise((resolve, reject) => {
         const query = `INSERT INTO ${table} SET ?;`;
@@ -225,4 +225,4 @@ const mysql_helpers = {
     },
 }
   
-module.exports = mysql_helpers;
+module.exports = LibMySql;
